@@ -77,8 +77,8 @@ A report ends in one of three labels, or in no label at all. The labels are
 prioritization labels for human review, not safety judgments.
 
 - `USE`: the signals a maintained project usually carries are present, and the static
-  scan found nothing. For a local scan those signals are five yes/no checks — a README,
-  a licence, package metadata, a tests directory, a CI config — and **every one of them
+  scan found nothing. For a local scan those signals are five yes/no checks (a README,
+  a licence, package metadata, a tests directory, a CI config) and **every one of them
   is satisfied by an empty file or an empty directory**. `USE` is not a statement about
   the code.
 - `INSPECT FIRST`: promising, but something needs a person to look at it.
@@ -120,8 +120,8 @@ Text files are read by extension, by a small set of conventional extensionless n
 (`Makefile`, `Dockerfile`, `install`, `configure`), and by shebang. Binary files are not
 read; the first 2 KB decides, and a byte-order mark is honoured so a UTF-16 file saved
 by a Windows editor is read as the text it is rather than skipped as binary. Directories
-holding code the repository did not write — `node_modules`, `vendor`, `third_party`,
-`target`, build output and virtual environments — are skipped, so findings in a copied
+holding code the repository did not write (`node_modules`, `vendor`, `third_party`,
+`target`, build output and virtual environments) are skipped, so findings in a copied
 dependency are not reported against the repository that vendored it.
 
 Each pattern is matched against a window of one line plus the next, never against a
@@ -136,7 +136,7 @@ which reports the genre of a file rather than the risk of a repository. The reli
 step and one step only, so a directory name cannot be used to hide anything: two such
 findings still reach `INSPECT FIRST`, and the identical files under `src/` reach `AVOID`.
 
-Directories holding code the repository did not write are skipped entirely — and that is
+Directories holding code the repository did not write are skipped entirely, and that is
 a complete blind spot, not a reduced one. Nothing in `node_modules`, `vendor`,
 `third_party`, `target`, `dist`, `build`, `out` or a virtual environment is examined by
 any rule. Text files over 64 MB are not read either; that skip is reported as a
@@ -152,7 +152,7 @@ directions, and a report is a list of things to look at, not a verdict on the co
 
 Repository signals are `present`, `absent`, or `unknown`. `absent` means the tool looked
 and the thing was not there. `unknown` means it could not be established, and is never
-silently converted into absence — including when a directory could not be read, which
+silently converted into absence, including when a directory could not be read, which
 in v0.1 was reported as `absent`.
 
 Where a signal can legitimately live varies by ecosystem, and looking in one place is
@@ -206,7 +206,7 @@ of the same measurement, not two different ones.
 Two rules went the other way, and that is the point of them: `remote-shell` rose from 79
 findings to 365 and `secret-like-string` from 42 to 273, because v0.1 did not open the
 files those patterns live in. Sampling them showed most of the new ones are real matches
-in documentation and test fixtures — a project's own `curl … | bash` install line in its
+in documentation and test fixtures: a project's own `curl … | bash` install line in its
 README, Amazon's published example access key in a guide, a scanner's own rule fixtures.
 **469 of 740 findings (63.4%) are reported at a reduced severity** for exactly that
 reason, because a documented installer scored `critical` drives `AVOID` on its own and
@@ -219,7 +219,7 @@ repository produces none, and the verdicts fall 46.5% `USE`, 21.8% `INSPECT FIRS
 purpose, and the reason `AVOID` is a prioritization label rather than an accusation.
 
 `not established` was produced for none of the 385. A local scan can now settle every
-signal it scores, so it withholds a label only when a directory cannot be read — which
+signal it scores, so it withholds a label only when a directory cannot be read, which
 none of these had. That state is reachable, not common.
 
 ### What it misses
@@ -228,17 +228,17 @@ The corpus measures what the tool says about ordinary repositories. It cannot me
 what the tool fails to say, because none of those 385 repositories is known to contain
 anything hostile. That was measured separately, by planting payloads whose detection is
 known in advance into 48 different file containers, 11 different positions in a file, and
-11 different directories — ground truth by construction, so a miss is a false negative
+11 different directories, ground truth by construction, so a miss is a false negative
 and not a judgement call.
 
 **v0.1 detected 17 of the 48 containers. v0.2 detects 48 of 48.** The 31 it missed
 included every compiled language, `.tsx` and `.jsx`, notebooks, Markdown, extensionless
 shell scripts named `install` or `configure`, and shell dotfiles. It also missed any
-UTF-16 file entirely, and missed `requests.post(url, data=os.environ)` — the idiomatic
-Python form — because the rule required the credential to appear before the network call.
+UTF-16 file entirely, and missed `requests.post(url, data=os.environ)`, the idiomatic
+Python form, because the rule required the credential to appear before the network call.
 
 The directory axis is the one that does not come out clean, and it is by design: of the
-11 locations, **6 are not scanned at all** — `build`, `dist`, `vendor`, `node_modules`,
+11 locations, **6 are not scanned at all**: `build`, `dist`, `vendor`, `node_modules`,
 `target`, `third_party` and the rest of the ignore list. A payload placed in any of them
 is invisible to every rule. That is the right default for judging a repository by code it
 actually wrote, and it is a complete blind spot rather than a reduced one.
