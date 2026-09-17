@@ -17,9 +17,10 @@ reputation service, or guarantee of safety.
 - Directories holding code the repository did not write are **not scanned at all**:
   `node_modules`, `vendor`, `third_party`, `target`, `dist`, `build`, `out`, `coverage`,
   virtual environments and the rest of `IGNORED_DIRS` in `repo_scout/scanner.py`. This is
-  deliberate — a finding in a copied dependency is not a finding about this repository —
-  but it is a complete blind spot, and `build/` in particular sometimes holds a project's
-  own scripts rather than build output. Anything placed there is invisible to every rule.
+  deliberate, because a finding in a copied dependency is not a finding about this
+  repository, but it is a complete blind spot, and `build/` in particular sometimes
+  holds a project's own scripts rather than build output. Anything placed there is
+  invisible to every rule.
 - A finding in documentation or a test fixture is reported one severity step lower than
   the same finding in the repository's own source, and the message says so. A project's
   documented `curl … | bash` install line scored `critical` would drive `AVOID` by itself,
@@ -38,8 +39,8 @@ reputation service, or guarantee of safety.
 
 - `USE`, `INSPECT FIRST`, and `AVOID` are prioritization labels for human review.
 - **`USE` is not a statement about the code.** For a local scan the entire usefulness
-  scale is five yes/no signals — a README, a licence, package metadata, a tests directory,
-  a CI config — and every one of them is satisfied by an empty file or an empty directory.
+  scale is five yes/no signals (a README, a licence, package metadata, a tests directory,
+  a CI config) and every one of them is satisfied by an empty file or an empty directory.
   `USE` means the things a maintained project usually has are present and the static scan
   found nothing, and it means nothing more than that.
 - A report can end with the verdict `not established`, which means the evidence
@@ -54,7 +55,7 @@ reputation service, or guarantee of safety.
 
 Version 0.2 was run against 385 real public repositories that this project did not
 author, spanning eleven languages, security-research and malware-analysis repositories,
-documentation-only repositories, monorepos, dotfile repositories and repositories whose
+documentation-only repositories, dotfile repositories and repositories whose
 primary language is not English. Every finding rate quoted in the README comes from that
 run. The zero-crash figure is a property of that corpus, not a guarantee. It measures what the tool says about ordinary repositories; it does not establish
 that the tool finds a determined attacker's code, because none of those repositories is
