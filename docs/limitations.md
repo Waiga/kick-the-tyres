@@ -54,7 +54,7 @@ reputation service, or guarantee of safety.
 
 Version 0.2 was run against 385 real public repositories that this project did not
 author, spanning eleven languages, security-research and malware-analysis repositories,
-documentation-only repositories, monorepos, dotfile repositories and repositories whose
+documentation-only repositories, dotfile repositories and repositories whose
 primary language is not English. Every finding rate quoted in the README comes from that
 run. The zero-crash figure is a property of that corpus, not a guarantee. It measures what the tool says about ordinary repositories; it does not establish
 that the tool finds a determined attacker's code, because none of those repositories is
