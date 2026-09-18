@@ -13,8 +13,8 @@ answer, not a gap waiting to be filled in.
 **What it is.** 385 repositories, selected by stratified search against the
 public GitHub search API and cloned to disk on **8 September 2026**.
 
-**The list.** [`docs/corpus/repositories.tsv`](corpus/repositories.tsv) — 385
-rows plus a header, one per repository:
+**The list.** [`docs/corpus/repositories.tsv`](corpus/repositories.tsv) holds
+385 rows plus a header, one per repository:
 
 | column | meaning |
 |---|---|
@@ -33,7 +33,7 @@ are recorded because they are what the selection queries filtered on.
 call with `sort=stars`, `order=desc`, and the stated `per_page`. The results of
 all twenty-one calls were concatenated and then deduplicated on the repository
 name with `sort -u -k2,2`, which is why the strata do not sum to their requested
-sizes — a repository matching two queries is kept once, under whichever stratum
+sizes. A repository matching two queries is kept once, under whichever stratum
 sorted first.
 
 | stratum | query | per_page |
@@ -52,7 +52,7 @@ sorted first.
 | `large` | `language:Python stars:>3000 size:60000..200000 archived:false` | 10 |
 | `testfixtures` | `topic:testing stars:>300 size:<25000` | 18 |
 
-**Strata as they came out**, after deduplication — these are counts from the
+**Strata as they came out**, after deduplication. These are counts from the
 committed file, not from the requested sizes:
 
 | stratum | repositories |
@@ -98,17 +98,17 @@ names and public metadata only. Each repository carries its own licence.
 
 Two measurement arms over the same frozen clones, using the same script:
 
-- **v0.1 arm** — the published v0.1 tree, results in `baseline_v01.ndjson`.
-- **v0.2 arm** — the current tree, results in `fixed.ndjson`.
+- **v0.1 arm**, the published v0.1 tree, results in `baseline_v01.ndjson`.
+- **v0.2 arm**, the current tree, results in `fixed.ndjson`.
 
 Both are NDJSON, one record per repository, 385 records each, carrying the
 per-repository byte and file counts, every finding with its rule, path and
 matched text, both usefulness figures, the risk score, the verdict and the
 elapsed time.
 
-The measurement script reproduces exactly what `repo-scout scan <dir>` does —
-`_local_repo_summary`, `_local_signals`, `scan_path`, `score_repository` — minus
-report writing.
+The measurement script reproduces exactly what `repo-scout scan <dir>` does,
+that is `_local_repo_summary`, `_local_signals`, `scan_path` and
+`score_repository`, minus report writing.
 
 Every figure in the README's before-and-after table is a direct read of those
 two files:
@@ -125,7 +125,7 @@ two files:
 | `secret-like-string` findings | 42 | 273 | same |
 | No tests reported | 230 | 147 | `signals.has_tests != "present"` |
 | No package metadata reported | 230 | 100 | `signals.has_package_metadata != "present"` |
-| Slowest single repository | 31.8 s | 25.4 s | `max(seconds)` — 31.767 and 25.378 |
+| Slowest single repository | 31.8 s | 25.4 s | `max(seconds)`, 31.767 and 25.378 |
 | Crashes, hangs, timeouts | 0 | 0 | `ok == false` count |
 
 The figures that follow that table come from the v0.2 arm alone: 740 findings in
@@ -159,11 +159,11 @@ own regex matches, planted into copies of corpus repositories along three axes:
 
 | axis | variants | what it varies |
 |---|---|---|
-| extension | 48 containers | the file the payload sits in — `.sh`, `.py`, `.tsx`, `.ipynb`, `.md`, `Dockerfile`, `Makefile`, `install`, `configure`, `.env` and 38 more |
+| extension | 48 containers | the file the payload sits in: `.sh`, `.py`, `.tsx`, `.ipynb`, `.md`, `Dockerfile`, `Makefile`, `install`, `configure`, `.env` and 38 more |
 | position | 11 positions | where in the file the payload sits |
 | location | 11 directories | which directory the file sits in |
 
-**Results, from `plant_results.ndjson`** — 280 records, one per (axis, rule,
+**Results, from `plant_results.ndjson`.** 280 records, one per (axis, rule,
 container) trial:
 
 - extension axis: 192 trials, 48 distinct containers × 4 rules, **192 detected**.
@@ -175,9 +175,9 @@ container) trial:
   README's statement and is the ignore list working as designed.
 
 **⚠️ The v0.1 side of this measurement is not reproducible from a file.** The
-README's "v0.1 detected 17 of the 48 containers" is real and was measured — the
-v0.1 arm printed `17/48` for every one of the four rules — but the results file
-was overwritten by the v0.2 run and only the printed summary survives, in the
+README's "v0.1 detected 17 of the 48 containers" is real and was measured,
+because the v0.1 arm printed `17/48` for every one of the four rules, but the
+results file was overwritten by the v0.2 run and only the printed summary survives, in the
 harness transcript of the session that produced it. There is no artefact a third
 party could be given. The 48-of-48 figure for v0.2 is backed by a surviving
 results file; the 17-of-48 figure for v0.1 is backed by a transcript line on the
@@ -193,11 +193,11 @@ general false-negative rate.
 
 | claim | status |
 |---|---|
-| which 385 repositories | **reproducible** — the list ships here |
-| the selection rule | **reproducible** — every query is stated |
-| the exact trees measured | **not reproducible** — no commit SHAs were recorded |
-| the corpus figures, exactly | **not reproducible** — depends on the trees above |
+| which 385 repositories | **reproducible**, the list ships here |
+| the selection rule | **reproducible**, every query is stated |
+| the exact trees measured | **not reproducible**, no commit SHAs were recorded |
+| the corpus figures, exactly | **not reproducible**, it depends on the trees above |
 | the corpus figures, approximately | reproducible by re-running against fresh clones |
 | the planted-payload figures for v0.2 | backed by a surviving results file, not published |
-| the planted-payload figure for v0.1 | **not reproducible** — file overwritten, transcript only |
+| the planted-payload figure for v0.1 | **not reproducible**, file overwritten, transcript only |
 | the measurement harness | **not published** |
