@@ -24,6 +24,10 @@ classifiers = [
 [project.scripts]
 kick-the-tyres = "kick_the_tyres.cli:main"
 
+[project.urls]
+Homepage = "https://github.com/Waiga/repo-scout"
+Issues = "https://github.com/Waiga/repo-scout/issues"
+
 [tool.setuptools]
 packages = ["kick_the_tyres"]
 

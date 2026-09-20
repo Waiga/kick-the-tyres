@@ -8,18 +8,16 @@ Kick The Tyres does not prove that software is safe, malicious, useful, or trust
 Static evidence can miss dangerous behavior and can also flag legitimate fixtures.
 Use the report to decide what needs human review.
 
-## Install locally
+## Install
 
 Kick The Tyres declares support for Python 3.11 or newer and has no runtime dependencies.
 
 ```bash
-python3 -m pip install --no-deps .
+pip install kick-the-tyres
 ```
 
-The command is `kick-the-tyres`. Version 0.3.0 is not on the Python Package Index yet, so
-a clone is the only way to install it today. The packaging metadata publishes as
-`kick-the-tyres`, and `pip install kick-the-tyres` will be the way to get it once it is
-there. This file says so only after that has happened.
+The command is `kick-the-tyres`. To install from a clone instead, run
+`python3 -m pip install --no-deps .` from the repository root.
 
 The tool was called Repo Scout up to version 0.2.0. It was renamed because the plain name
 on the package index belongs to an unrelated project published there in 2017, so the tool
@@ -277,8 +275,8 @@ from a checkout or a repository archive.
 
 ## Project status
 
-Kick The Tyres is version 0.3.0 and early alpha. Commands, scoring weights, and report
-output can change without a deprecation period. Version 0.3.0 is 0.2.0 under a new name:
+Kick The Tyres is version 0.3.1 and early alpha. Commands, scoring weights, and report
+output can change without a deprecation period. Version 0.3 is 0.2.0 under a new name:
 the command, the import path and the cache directory all changed with it, and nothing
 else did.
 
