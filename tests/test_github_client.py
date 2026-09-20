@@ -4,7 +4,7 @@ import unittest
 import urllib.error
 from io import BytesIO
 
-from repo_scout.github_client import GitHubClient, GitHubClientError
+from kick_the_tyres.github_client import GitHubClient, GitHubClientError
 
 
 class FakeResponse:

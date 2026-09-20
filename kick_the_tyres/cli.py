@@ -16,7 +16,7 @@ from .scanner import IGNORED_DIRS, scan_path
 from .scoring import score_repository
 
 
-DEFAULT_CACHE = Path(".repo-scout-cache")
+DEFAULT_CACHE = Path(".kick-the-tyres-cache")
 DEFAULT_DOWNLOADS = Path("downloads")
 DEFAULT_REPORTS = Path("reports")
 REPO_NAME_RE = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
@@ -33,10 +33,10 @@ def _valid_repo_name(value: str) -> bool:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="repo-scout",
+        prog="kick-the-tyres",
         description=(
             "Report static evidence about a public GitHub repository or a local "
-            "directory. Repo Scout does not prove that a repository is safe or "
+            "directory. Kick The Tyres does not prove that a repository is safe or "
             "infected: it reports what it observed and what it could not "
             "establish, and its verdicts are prioritization labels for human "
             "review."
@@ -45,7 +45,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--version",
         action="version",
-        version=f"repo-scout {__version__}",
+        version=f"kick-the-tyres {__version__}",
         help="print the installed version and exit",
     )
     parser.add_argument(

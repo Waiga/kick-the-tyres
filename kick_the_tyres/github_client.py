@@ -78,7 +78,7 @@ class GitHubClient:
             url,
             headers={
                 "Accept": "application/vnd.github+json",
-                "User-Agent": f"repo-scout/{__version__}",
+                "User-Agent": f"kick-the-tyres/{__version__}",
             },
         )
 

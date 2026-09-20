@@ -6,23 +6,23 @@ import unittest
 from pathlib import Path
 from contextlib import redirect_stdout
 from unittest.mock import Mock, patch
-from repo_scout.cli import _local_signals
-from repo_scout.models import Finding, RepoReport, RepoSignals, RepoSummary
-from repo_scout.report import write_report
-from repo_scout.scanner import scan_path
-from repo_scout.scoring import score_repository
+from kick_the_tyres.cli import _local_signals
+from kick_the_tyres.models import Finding, RepoReport, RepoSignals, RepoSummary
+from kick_the_tyres.report import write_report
+from kick_the_tyres.scanner import scan_path
+from kick_the_tyres.scoring import score_repository
 
 
-from repo_scout.cache import FileCache
-from repo_scout.cli import (
+from kick_the_tyres.cache import FileCache
+from kick_the_tyres.cli import (
     main,
     run_download_command,
     run_inspect_command,
     run_scan_command,
     run_search_command,
 )
-from repo_scout.github_client import GitHubClientError
-from repo_scout.models import FileFetch, RepoSummary
+from kick_the_tyres.github_client import GitHubClientError
+from kick_the_tyres.models import FileFetch, RepoSummary
 
 
 class FailingClient:
@@ -53,7 +53,7 @@ class CliErrorTests(unittest.TestCase):
         client.get_repo.assert_not_called()
 
     def test_rejects_path_traversal_and_shell_characters_before_download(self):
-        with tempfile.TemporaryDirectory() as tmp, patch("repo_scout.cli.shutil.which") as which:
+        with tempfile.TemporaryDirectory() as tmp, patch("kick_the_tyres.cli.shutil.which") as which:
             for repo_name in ("../repo", "owner/../repo", "owner/repo/extra", "owner\\repo", "owner/repo;echo pwned"):
                 self.assertEqual(run_download_command(repo_name, Path(tmp)), 2)
 
@@ -61,8 +61,8 @@ class CliErrorTests(unittest.TestCase):
 
     def test_rejects_dot_only_components_before_client_or_git(self):
         with tempfile.TemporaryDirectory() as tmp, \
-             patch("repo_scout.cli.shutil.which") as which, \
-             patch("repo_scout.cli.subprocess.run") as run:
+             patch("kick_the_tyres.cli.shutil.which") as which, \
+             patch("kick_the_tyres.cli.subprocess.run") as run:
             root = Path(tmp)
             for repo_name in ("./repo", "owner/.", "./."):
                 client = Mock()
@@ -75,7 +75,7 @@ class CliErrorTests(unittest.TestCase):
         run.assert_not_called()
 
     def test_main_rejects_malformed_inspect_before_initializing_dependencies(self):
-        with patch("repo_scout.cli.GitHubClient") as client, patch("repo_scout.cli.FileCache") as cache:
+        with patch("kick_the_tyres.cli.GitHubClient") as client, patch("kick_the_tyres.cli.FileCache") as cache:
             code = main(["inspect", "not-a-repo"])
 
         self.assertEqual(code, 2)
@@ -96,8 +96,8 @@ class CliErrorTests(unittest.TestCase):
 
     def test_existing_download_destination_skips_git_lookup_and_run(self):
         with tempfile.TemporaryDirectory() as tmp, \
-             patch("repo_scout.cli.shutil.which") as which, \
-             patch("repo_scout.cli.subprocess.run") as run:
+             patch("kick_the_tyres.cli.shutil.which") as which, \
+             patch("kick_the_tyres.cli.subprocess.run") as run:
             root = Path(tmp)
             (root / "owner__repo").mkdir()
 
@@ -109,8 +109,8 @@ class CliErrorTests(unittest.TestCase):
 
     def test_missing_git_reports_operational_failure_without_subprocess(self):
         with tempfile.TemporaryDirectory() as tmp, \
-             patch("repo_scout.cli.shutil.which", return_value=None), \
-             patch("repo_scout.cli.subprocess.run") as run:
+             patch("kick_the_tyres.cli.shutil.which", return_value=None), \
+             patch("kick_the_tyres.cli.subprocess.run") as run:
             code = run_download_command("owner/repo", Path(tmp))
 
         self.assertEqual(code, 1)
@@ -118,16 +118,16 @@ class CliErrorTests(unittest.TestCase):
 
     def test_download_reports_clone_failure(self):
         with tempfile.TemporaryDirectory() as tmp, \
-             patch("repo_scout.cli.shutil.which", return_value="/usr/bin/git"), \
-             patch("repo_scout.cli.subprocess.run", side_effect=subprocess.CalledProcessError(1, ["git"])):
+             patch("kick_the_tyres.cli.shutil.which", return_value="/usr/bin/git"), \
+             patch("kick_the_tyres.cli.subprocess.run", side_effect=subprocess.CalledProcessError(1, ["git"])):
             code = run_download_command("owner/repo", Path(tmp))
 
         self.assertEqual(code, 1)
 
     def test_download_uses_argument_list_and_shallow_clone(self):
         with tempfile.TemporaryDirectory() as tmp, \
-             patch("repo_scout.cli.shutil.which", return_value="/usr/bin/git"), \
-             patch("repo_scout.cli.subprocess.run") as run:
+             patch("kick_the_tyres.cli.shutil.which", return_value="/usr/bin/git"), \
+             patch("kick_the_tyres.cli.subprocess.run") as run:
             root = Path(tmp)
             code = run_download_command("owner/repo", root)
 
@@ -139,8 +139,8 @@ class CliErrorTests(unittest.TestCase):
 
     def test_rejects_consecutive_dot_names_before_client_or_git(self):
         with tempfile.TemporaryDirectory() as tmp, \
-             patch("repo_scout.cli.shutil.which") as which, \
-             patch("repo_scout.cli.subprocess.run") as run:
+             patch("kick_the_tyres.cli.shutil.which") as which, \
+             patch("kick_the_tyres.cli.subprocess.run") as run:
             root = Path(tmp)
             for repo_name in ("owner..name/repo", "owner/repo..name", "..owner/repo", "owner/repo.."):
                 client = Mock()
@@ -154,7 +154,7 @@ class CliErrorTests(unittest.TestCase):
 
     def test_accepts_ordinary_dotted_names(self):
         with tempfile.TemporaryDirectory() as tmp, \
-             patch("repo_scout.cli.shutil.which", return_value=None) as which:
+             patch("kick_the_tyres.cli.shutil.which", return_value=None) as which:
             code = run_download_command("owner.name/repo.name", Path(tmp))
 
         self.assertEqual(code, 1)
@@ -210,7 +210,7 @@ if __name__ == "__main__":
 class LocalEvidenceRegressions(unittest.TestCase):
     """Signal detection defects measured against real repositories, 2026-09-08.
 
-    Repo Scout's stated doctrine is that `absent` means confirmed to lack and
+    The stated doctrine here is that `absent` means confirmed to lack and
     `unknown` means not established. v0.1 looked for tests, CI and package
     metadata only at the top level, case-sensitively, and only in the four
     forms it happened to know, then printed `absent` for everything else. That

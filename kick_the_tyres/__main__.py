@@ -1,4 +1,4 @@
-"""Entry point for `python -m repo_scout`."""
+"""Entry point for `python -m kick_the_tyres`."""
 
 from .cli import main
 

@@ -1,3 +1,4 @@
+import re
 import subprocess
 import tomllib
 import unittest
@@ -43,7 +44,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - run: python -m pip install --no-deps .
-      - run: cd "$RUNNER_TEMP" && repo-scout --help
+      - run: cd "$RUNNER_TEMP" && kick-the-tyres --help
       - run: PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -v
 """
 
@@ -54,14 +55,14 @@ jobs:
 # material out of the same repository. Order matches the file, because the
 # completeness check below compares the two directly.
 IGNORE_CONTRACT = (
-    (".repo-scout-cache/", ".repo-scout-cache/probe.json"),
+    (".kick-the-tyres-cache/", ".kick-the-tyres-cache/probe.json"),
     ("downloads/", "downloads/probe-repo/README.md"),
     ("reports/", "reports/probe-report.md"),
-    ("__pycache__/", "repo_scout/__pycache__/probe.txt"),
+    ("__pycache__/", "kick_the_tyres/__pycache__/probe.txt"),
     ("*.pyc", "probe.pyc"),
     ("build/", "build/probe.txt"),
     ("dist/", "dist/probe.txt"),
-    ("*.egg-info/", "repo_scout.egg-info/PKG-INFO"),
+    ("*.egg-info/", "kick_the_tyres.egg-info/PKG-INFO"),
     (".superpowers/", ".superpowers/probe.json"),
     ("docs/superpowers/", "docs/superpowers/probe.md"),
 )
@@ -191,8 +192,40 @@ class PackageMetadataTests(unittest.TestCase):
         self.assertEqual(data["project"]["readme"], "README.md")
         self.assertEqual(data["project"]["license"], "MIT")
         self.assertEqual(data["project"]["requires-python"], ">=3.11")
-        self.assertEqual(data["project"]["scripts"]["repo-scout"], "repo_scout.cli:main")
+        self.assertEqual(data["project"]["scripts"]["kick-the-tyres"], "kick_the_tyres.cli:main")
         self.assertTrue((ROOT / "LICENSE").is_file())
+
+    def test_the_tool_the_command_and_the_package_share_one_name(self):
+        # The point of the rename from Repo Scout. Seven sibling tools install
+        # under their own name and one does not, which costs a sentence of
+        # explanation on every public surface that mentions it. A second name
+        # reintroduced here would cost the same sentence again.
+        data = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
+        scripts = data["project"]["scripts"]
+
+        self.assertEqual(data["project"]["name"], "kick-the-tyres")
+        self.assertEqual(data["tool"]["setuptools"]["packages"], ["kick_the_tyres"])
+        self.assertEqual(
+            list(scripts), ["kick-the-tyres"],
+            "the package declares a second console command; one name is the point",
+        )
+
+    def test_the_readme_states_the_version_the_code_reports(self):
+        # `kick_the_tyres/__init__.py` is the single source of the version and
+        # says so, but the README states a number in prose and nothing held the
+        # two together. A sibling tool shipped 0.2.0 announcing itself as 0.1.0
+        # for exactly this reason, and a rename release is when it would bite.
+        from kick_the_tyres import __version__
+
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        claimed = re.findall(r"is version (\d+\.\d+\.\d+)", readme)
+
+        self.assertTrue(claimed, "the README no longer states a version at all")
+        for figure in claimed:
+            self.assertEqual(
+                figure, __version__,
+                f"the README says {figure} and the code reports {__version__}",
+            )
 
     def test_every_declared_ignore_pattern_is_guarded(self):
         # Completeness only: a pattern added to `.gitignore` without a probe

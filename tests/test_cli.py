@@ -7,8 +7,8 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from repo_scout.cache import FileCache
-from repo_scout.cli import (
+from kick_the_tyres.cache import FileCache
+from kick_the_tyres.cli import (
     _local_repo_summary,
     build_parser,
     print_summary,
@@ -17,9 +17,9 @@ from repo_scout.cli import (
     run_scan_command,
     run_search_command,
 )
-from repo_scout.models import FileFetch, RepoReport, RepoSignals, RepoSummary
-from repo_scout.report import write_report
-from repo_scout.scoring import score_repository
+from kick_the_tyres.models import FileFetch, RepoReport, RepoSignals, RepoSummary
+from kick_the_tyres.report import write_report
+from kick_the_tyres.scoring import score_repository
 
 
 NUMERIC_RISK = re.compile(r"(?i)risk:?(\*\*)? \d+/100")
@@ -97,7 +97,7 @@ class CliTests(unittest.TestCase):
                     text = written.read_text(encoding="utf-8")
                     self.assertNotIn(str(repo), text)
                     self.assertNotIn(str(repo.resolve()), text)
-                    self.assertIn("Repo Scout Report: repo", text)
+                    self.assertIn("Kick The Tyres Report: repo", text)
 
     def test_inspect_never_reports_an_absence_of_static_findings(self):
         # `inspect` reads published metadata and opens no file, so its findings
@@ -307,8 +307,8 @@ class CliTests(unittest.TestCase):
 
     def test_download_success_message_qualifies_quarantine(self):
         with tempfile.TemporaryDirectory() as tmp, \
-             patch("repo_scout.cli.shutil.which", return_value="/usr/bin/git"), \
-             patch("repo_scout.cli.subprocess.run"):
+             patch("kick_the_tyres.cli.shutil.which", return_value="/usr/bin/git"), \
+             patch("kick_the_tyres.cli.subprocess.run"):
             terminal = io.StringIO()
             with contextlib.redirect_stdout(terminal):
                 code = run_download_command("owner/repo", Path(tmp))
