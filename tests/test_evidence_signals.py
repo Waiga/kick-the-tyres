@@ -2,8 +2,8 @@ import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from repo_scout.cli import _fetch_signals, _local_signals
-from repo_scout.models import FileFetch, RepoSummary
+from kick_the_tyres.cli import _fetch_signals, _local_signals
+from kick_the_tyres.models import FileFetch, RepoSummary
 
 
 class SignalClient:

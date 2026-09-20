@@ -1,6 +1,6 @@
 # Limitations
 
-Repo Scout is a static triage tool, not a malware sandbox, legal review, package
+Kick The Tyres is a static triage tool, not a malware sandbox, legal review, package
 reputation service, or guarantee of safety.
 
 ## What it cannot see
@@ -16,7 +16,7 @@ reputation service, or guarantee of safety.
   findings is a count of places worth looking, not a census.
 - Directories holding code the repository did not write are **not scanned at all**:
   `node_modules`, `vendor`, `third_party`, `target`, `dist`, `build`, `out`, `coverage`,
-  virtual environments and the rest of `IGNORED_DIRS` in `repo_scout/scanner.py`. This is
+  virtual environments and the rest of `IGNORED_DIRS` in `kick_the_tyres/scanner.py`. This is
   deliberate, because a finding in a copied dependency is not a finding about this
   repository, but it is a complete blind spot, and `build/` in particular sometimes
   holds a project's own scripts rather than build output. Anything placed there is
@@ -70,4 +70,4 @@ patterns the rules were never written to catch.
 No claim is made that a reader who runs this tool makes a better adoption decision. That
 has not been measured and there is no oracle here that could measure it.
 
-Do not execute a repository merely because Repo Scout reports low static risk.
+Do not execute a repository merely because Kick The Tyres reports low static risk.

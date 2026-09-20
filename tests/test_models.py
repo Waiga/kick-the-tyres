@@ -1,6 +1,6 @@
 import unittest
 
-from repo_scout.models import Finding, RepoReport, RepoSignals, RepoSummary, ScoreResult
+from kick_the_tyres.models import Finding, RepoReport, RepoSignals, RepoSummary, ScoreResult
 
 
 class ModelTests(unittest.TestCase):

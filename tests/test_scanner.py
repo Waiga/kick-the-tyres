@@ -2,9 +2,9 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from repo_scout.models import RepoSignals, RepoSummary
-from repo_scout.scanner import scan_path
-from repo_scout.scoring import score_repository
+from kick_the_tyres.models import RepoSignals, RepoSummary
+from kick_the_tyres.scanner import scan_path
+from kick_the_tyres.scoring import score_repository
 
 
 class ScannerTests(unittest.TestCase):

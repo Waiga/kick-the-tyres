@@ -20,5 +20,5 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - run: python -m pip install --no-deps .
-      - run: cd "$RUNNER_TEMP" && repo-scout --help
+      - run: cd "$RUNNER_TEMP" && kick-the-tyres --help
       - run: PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -v

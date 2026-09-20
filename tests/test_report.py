@@ -4,8 +4,8 @@ import unittest
 from dataclasses import replace
 from pathlib import Path
 
-from repo_scout.models import Finding, RepoReport, RepoSignals, RepoSummary, ScoreResult
-from repo_scout.report import render_html, render_markdown, verdict_text, write_report
+from kick_the_tyres.models import Finding, RepoReport, RepoSignals, RepoSummary, ScoreResult
+from kick_the_tyres.report import render_html, render_markdown, verdict_text, write_report
 
 
 def sample_report():
@@ -42,7 +42,7 @@ class ReportTests(unittest.TestCase):
     def test_markdown_contains_verdict_and_findings(self):
         text = render_markdown(sample_report())
 
-        self.assertIn("# Repo Scout Report: owner/repo", text)
+        self.assertIn("# Kick The Tyres Report: owner/repo", text)
         self.assertIn("Verdict:** AVOID", text)
         self.assertIn("README: present", text)
         self.assertIn("remote-shell", text)

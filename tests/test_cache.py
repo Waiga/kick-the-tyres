@@ -2,7 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from repo_scout.cache import FileCache
+from kick_the_tyres.cache import FileCache
 
 
 class CacheTests(unittest.TestCase):

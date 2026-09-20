@@ -22,10 +22,10 @@ classifiers = [
 ]
 
 [project.scripts]
-repo-scout = "repo_scout.cli:main"
+kick-the-tyres = "kick_the_tyres.cli:main"
 
 [tool.setuptools]
-packages = ["repo_scout"]
+packages = ["kick_the_tyres"]
 
 # One source of truth for the version, and one that is readable
 # without installing: `importlib.metadata` alone reported
@@ -33,4 +33,4 @@ packages = ["repo_scout"]
 # whatever happened to be installed in the environment rather than
 # the code being executed.
 [tool.setuptools.dynamic]
-version = { attr = "repo_scout.__version__" }
+version = { attr = "kick_the_tyres.__version__" }

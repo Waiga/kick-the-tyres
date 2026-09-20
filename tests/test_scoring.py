@@ -1,7 +1,7 @@
 import unittest
 
-from repo_scout.models import Finding, RepoSignals, RepoSummary
-from repo_scout.scoring import score_repository
+from kick_the_tyres.models import Finding, RepoSignals, RepoSummary
+from kick_the_tyres.scoring import score_repository
 
 
 def repo(**overrides):

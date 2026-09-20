@@ -8,7 +8,7 @@ commitment to a date.
 These are specific defects and shortfalls found during internal review of V0.1. Each is
 small, self-contained, and a reasonable first contribution.
 
-1. **Repository names may start with a non-alphanumeric character.** `repo_scout.cli`
+1. **Repository names may start with a non-alphanumeric character.** `kick_the_tyres.cli`
    accepts any component matching `[A-Za-z0-9_.-]+`, while GitHub requires a name to
    begin with an alphanumeric character. Enforcing the real rule also rejects
    option-shaped input such as `--upload-pack/x` before it reaches the Git command line.
@@ -19,7 +19,7 @@ small, self-contained, and a reasonable first contribution.
    `FileExistsError` when the downloads directory is itself a file, and
    `NotADirectoryError` when a parent component is a file.
 3. **Repository component length is unbounded.** GitHub limits an owner name to 39
-   characters and a repository name to 100. Repo Scout accepts arbitrarily long
+   characters and a repository name to 100. Kick The Tyres accepts arbitrarily long
    components and only discovers the problem when the request fails.
 4. **The workflow definition uses floating action tags and no run controls.**
    `.github/workflows/ci.yml` references mutable major version tags rather than commit
@@ -30,7 +30,7 @@ small, self-contained, and a reasonable first contribution.
    workflow matrix stop at 3.14. The project therefore advertises support for versions
    nothing exercises.
 6. **`contributor_count` is never populated.** `RepoSignals` carries the field and
-   `repo_scout.scoring` gives it a fifth of the credibility component, but no V0.1
+   `kick_the_tyres.scoring` gives it a fifth of the credibility component, but no V0.1
    command fetches it: `search` builds an empty `RepoSignals`, `_fetch_signals` does not
    set it, and a local scan has no contributor list to read. It is therefore always
    unknown, which now widens the usefulness ceiling instead of silently subtracting

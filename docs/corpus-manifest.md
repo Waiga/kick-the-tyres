@@ -106,7 +106,7 @@ per-repository byte and file counts, every finding with its rule, path and
 matched text, both usefulness figures, the risk score, the verdict and the
 elapsed time.
 
-The measurement script reproduces exactly what `repo-scout scan <dir>` does,
+The measurement script reproduces exactly what `kick-the-tyres scan <dir>` does,
 that is `_local_repo_summary`, `_local_signals`, `scan_path` and
 `score_repository`, minus report writing.
 

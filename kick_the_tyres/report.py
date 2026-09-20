@@ -16,7 +16,7 @@ NO_URL = "none recorded"
 # means nothing was examined, and the two must not read alike.
 NO_SCAN_FINDINGS = (
     "No static scan was performed, so the file contents of this repository are "
-    "unknown. Run `repo-scout download OWNER/REPO` and then `repo-scout scan` on "
+    "unknown. Run `kick-the-tyres download OWNER/REPO` and then `kick-the-tyres scan` on "
     "the downloaded directory to examine them."
 )
 
@@ -33,7 +33,7 @@ NO_SCAN_RISK = (
 # session or a pasted screenshot, so the framing is repeated where the numbers
 # are rather than left behind in the repository.
 LIMITATION = (
-    "Static evidence only. Repo Scout does not prove that a repository is safe or "
+    "Static evidence only. Kick The Tyres does not prove that a repository is safe or "
     "infected. A verdict is a prioritization label for human review. "
     "See docs/limitations.md."
 )
@@ -111,7 +111,7 @@ def usefulness_text(score: ScoreResult) -> str:
 
 def render_markdown(report: RepoReport) -> str:
     lines = [
-        f"# Repo Scout Report: {report.repo.full_name}",
+        f"# Kick The Tyres Report: {report.repo.full_name}",
         "",
         f"- **Verdict:** {verdict_text(report.score)}",
         f"- **Usefulness:** {usefulness_text(report.score)}",
@@ -171,7 +171,7 @@ def render_html(report: RepoReport) -> str:
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Repo Scout Report: {html.escape(report.repo.full_name)}</title>
+  <title>Kick The Tyres Report: {html.escape(report.repo.full_name)}</title>
   <style>
     body {{ font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin: 2rem; line-height: 1.5; }}
     .verdict {{ font-size: 1.25rem; font-weight: 700; }}
@@ -181,7 +181,7 @@ def render_html(report: RepoReport) -> str:
   </style>
 </head>
 <body>
-  <h1>Repo Scout Report: {html.escape(report.repo.full_name)}</h1>
+  <h1>Kick The Tyres Report: {html.escape(report.repo.full_name)}</h1>
   <p class="verdict">Verdict: {html.escape(verdict_text(report.score))}</p>
   <ul>
     <li>Usefulness: {html.escape(usefulness_text(report.score))}</li>
