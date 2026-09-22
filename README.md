@@ -247,9 +247,11 @@ Python form, because the rule required the credential to appear before the netwo
 
 The directory axis is the one that does not come out clean, and it is by design: of the
 11 locations, **6 are not scanned at all**: `build`, `dist`, `vendor`, `node_modules`,
-`target`, `third_party` and the rest of the ignore list. A payload placed in any of them
-is invisible to every rule. That is the right default for judging a repository by code it
-actually wrote, and it is a complete blind spot rather than a reduced one.
+`target` and `third_party`, all six of them on the scanner's ignore list. A payload
+placed in any of them is invisible to every rule. That is the right default for judging a
+repository by code it actually wrote, and it is a complete blind spot rather than a
+reduced one. The ignore list holds 25 names in total, so the 19 this experiment planted
+nothing in are untested rather than clear.
 
 None of this says anything about patterns the rules were never written to catch, and it
 is not a claim that the tool finds a determined attacker's code. No claim is made that a
@@ -275,8 +277,10 @@ from a checkout or a repository archive.
 
 ## Project status
 
-Kick The Tyres is version 0.3.1 and early alpha. Commands, scoring weights, and report
-output can change without a deprecation period. Version 0.3 is 0.2.0 under a new name:
+Kick The Tyres is early alpha. Commands, scoring weights, and report output can change
+without a deprecation period. The version you have is what `kick-the-tyres --version`
+prints, and the current release is the one on its PyPI page. Version 0.3 is 0.2.0 under a
+new name:
 the command, the import path and the cache directory all changed with it, and nothing
 else did.
 

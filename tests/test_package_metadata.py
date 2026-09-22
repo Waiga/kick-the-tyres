@@ -210,17 +210,22 @@ class PackageMetadataTests(unittest.TestCase):
             "the package declares a second console command; one name is the point",
         )
 
-    def test_the_readme_states_the_version_the_code_reports(self):
+    def test_any_version_the_readme_states_matches_the_code(self):
         # `kick_the_tyres/__init__.py` is the single source of the version and
-        # says so, but the README states a number in prose and nothing held the
+        # says so, but the README stated a number in prose and nothing held the
         # two together. A sibling tool shipped 0.2.0 announcing itself as 0.1.0
         # for exactly this reason, and a rename release is when it would bite.
+        #
+        # The README no longer states a live version at all, which closes the
+        # hole this test could not: between a version bump and a successful
+        # upload, a README pinned to `__version__` names a release nobody can
+        # install, and this test passes throughout. The check stays anyway, so
+        # that reintroducing a number reintroduces the guard with it.
         from kick_the_tyres import __version__
 
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         claimed = re.findall(r"is version (\d+\.\d+\.\d+)", readme)
 
-        self.assertTrue(claimed, "the README no longer states a version at all")
         for figure in claimed:
             self.assertEqual(
                 figure, __version__,

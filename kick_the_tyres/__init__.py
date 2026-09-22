@@ -9,6 +9,6 @@
 # environment instead of the code actually executing. A sibling tool in this
 # portfolio shipped 0.2.0 announcing itself as 0.1.0 because the number was
 # written twice; there were three copies here.
-__version__ = "0.3.1"
+__version__ = "0.3.2"
 
 __all__ = ["__version__"]
