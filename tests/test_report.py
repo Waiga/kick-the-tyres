@@ -142,7 +142,15 @@ class ReportTests(unittest.TestCase):
         for text in (render_markdown(sample_report()), render_html(sample_report())):
             with self.subTest(rendered=text[:20]):
                 self.assertIn("does not prove", text)
-                self.assertIn("docs/limitations.md", text)
+                # An absolute URL, not a relative path. No `pip install` user has
+                # a `docs/` directory: `pyproject.toml` ships only the package and
+                # there is no MANIFEST.in, so a bare `docs/limitations.md` resolves
+                # for nobody but someone standing in a clone. The recipient of a
+                # shared report is further from a checkout than the person who ran it.
+                self.assertIn(
+                    "https://github.com/Waiga/kick-the-tyres/blob/main/docs/limitations.md",
+                    text,
+                )
 
     def test_html_escapes_every_field_taken_from_a_scanned_repository(self):
         # docs/architecture.md promises escaped HTML reports. Findings carry text

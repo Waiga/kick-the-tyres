@@ -30,10 +30,11 @@ are as GitHub reported them on 8 September 2026 and will have moved since; they
 are recorded because they are what the selection queries filtered on.
 
 **Selection rule, exactly.** Each line below is one `GET /search/repositories`
-call with `sort=stars`, `order=desc`, and the stated `per_page`. The results of
-all twenty-one calls were concatenated and then deduplicated on the repository
-name with `sort -u -k2,2`, which is why the strata do not sum to their requested
-sizes. A repository matching two queries is kept once, under whichever stratum
+call with `sort=stars`, `order=desc`, and the stated `per_page`, except the
+`general` line, which is eleven calls, one per language. That is twenty-three
+calls in all. Their results were concatenated and then deduplicated on the
+repository name with `sort -u -k2,2`, which is why the strata do not sum to
+their requested sizes. A repository matching two queries is kept once, under whichever stratum
 sorted first.
 
 | stratum | query | per_page |

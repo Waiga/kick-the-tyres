@@ -35,7 +35,7 @@ NO_SCAN_RISK = (
 LIMITATION = (
     "Static evidence only. Kick The Tyres does not prove that a repository is safe or "
     "infected. A verdict is a prioritization label for human review. "
-    "See docs/limitations.md."
+    "See https://github.com/Waiga/kick-the-tyres/blob/main/docs/limitations.md."
 )
 
 
