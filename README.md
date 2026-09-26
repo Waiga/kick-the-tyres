@@ -327,3 +327,12 @@ MIT
 
 [Waiga Arya](https://www.linkedin.com/in/waigaarya/), Director of Business Strategy and
 Innovation at Sadaway Pvt. Ltd. These tools were built for my own operating problems first.
+
+What 385 real public repositories found in it, including two verdicts it could
+never have printed, is written up in
+[Two of my scanner's four verdicts were impossible to reach](https://medium.com/@aryawaiga0/two-of-my-scanners-four-verdicts-were-impossible-to-reach-cecc6a853e8a).
+
+## Elsewhere
+
+The rest of these tools, and the writing about what real files did to them, is at
+[waiga.github.io](https://waiga.github.io).
